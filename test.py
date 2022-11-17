@@ -27,6 +27,10 @@ y_2022 = pd.read_csv(url22, on_bad_lines='skip');
 
 data = pd.concat([y_2015, y_2016, y_2017, y_2018, y_2019, y_2020, y_2021, y_2022],sort=False)
 print(data)
+
+# แสดงค่าอธิบายข้อมูล
+print(data.describe().T)
+print(data.info())
 data.rename(columns={
     "Overall rank": "rank",
     "Overall Rank": "rank",
@@ -42,4 +46,12 @@ data.rename(columns={
 },inplace=True)
 del data["rank"]
 print(data)
-print(data.isnull())
+print(data.info())
+
+# Missing value
+data.columns[data.isnull().any()]
+data.isnull().sum()
+data[data["corruption"].isnull()]
+
+avg_data_corruption = data[data["score"] > 6.774].mean().corruption
+data.loc[data["corruption"].isnull(),["corruption"]] = avg_data_corruption
